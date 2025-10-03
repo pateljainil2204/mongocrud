@@ -8,7 +8,7 @@ function authentication(req, res, next) {
     return res.status(401).json({ error: "token required" });
   }
 
-  jwt.verify(key, "aaa", (err, user) => {
+  jwt.verify(key, "aaa", (err, user) => {    
     if (err) return res.status(403).json({ error: "invalid or expire token" });
     req.user = user; 
     next();

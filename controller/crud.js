@@ -2,7 +2,11 @@ import Task from "../models/model.js";
 
 const createTask = async ( req, res ) => {
   try{ 
-    const task = new Task(req.body);
+    const data = {
+      ...req.body,
+      createdBy: req.user.id
+    }    
+    const task = new Task(data);
     await task.save();
     res.status(201).json(task);
   } catch (error) {
@@ -21,7 +25,7 @@ const createTask = async ( req, res ) => {
 
 const getTaskbyid = async ( req, res ) => {
     try{
-      const task = await Task.findById(req.params.id);
+      const task = await Task.findById(req.params.id).populate("createdBy", "-password");
       if(!task) return res.status(404).json({ message: "task not found" });
       res.json(task);
     } catch (error) {

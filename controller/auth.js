@@ -33,9 +33,9 @@ const login = async ( req, res ) => {
       const isMatch = bcrypt.compare(password, user.password);
       if (!isMatch) {
       return res.status(400).json({ error: "Invalid username or password" }); 
-    }
-      const payload = { id: user.id, username: user.username };
-      const token = jwt.sign(payload, "aaa", { expiresIn: "1h" });
+    } 
+      const payload = { id: user._id, username: user.username };
+      const token = jwt.sign(payload, "aaa", { expiresIn: "1y" });
       return res.json({ message: "Login successful", token });
       } catch (error) {
        res.status(400).json({ error: error.message });

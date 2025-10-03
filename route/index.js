@@ -6,7 +6,7 @@ import authentication from "../controller/authverify.js"
 
 const router = Router();
 
-router.post("/", createTask);
+router.post("/", authentication, createTask);
 router.get("/", getallTask);
 router.get("/:id", getTaskbyid);
 router.put("/:id", updateTask);
