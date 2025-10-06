@@ -7,7 +7,9 @@ const taskSchema = new Schema(
     isCompleted: { type: Boolean, default: false },
     createdBy: {
       type: Types.ObjectId, require: true, ref: "auth"
-    }
+    },
+    isDeleted: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null }
   },
   { timestamps: true }
 );

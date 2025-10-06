@@ -16,7 +16,7 @@ const createTask = async ( req, res ) => {
 
  const getallTask = async ( req, res ) => {
     try{
-      const tasks =  await Task.find();
+      const tasks =  await Task.find({ isDeleted: false }).select("-isDeleted -deletedAt");
       res.json(tasks);
   } catch (error) {
       res.status(400).json({ error: error.message });
@@ -45,8 +45,14 @@ const updateTask = async ( req , res ) => {
 
 const deleteTask = async ( req, res ) => {
     try{
-        const task = await Task.findByIdAndDelete(req.params.id);   
+        const task = await Task.findById(req.params.id);   
         if (!task) return res.status(404).json({ message: "Task not found" });
+        
+        //softdelete
+        task.isDeleted = true;
+        task.deletedAt = new Date();
+        await task.save();
+
         res.json({ message: "Task deleted successfully" });
     }catch ( error ) {
         res.status(400).json({ error: error.message });
